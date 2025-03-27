@@ -72,8 +72,8 @@ class PostDetailView(DetailView):
     def get_object(self, queryset=None):
         post = get_object_or_404(Post, pk=self.kwargs['pk'])
 
-        if not (post.is_published and post.category.is_published and
-                post.pub_date <= timezone.now()):
+        if not (post.is_published and post.category.is_published
+                and post.pub_date <= timezone.now()):
             # Если пост не опубликован, проверяем авторство
             if self.request.user != post.author:
                 raise Http404("Запись не найдена или не опубликована")
@@ -87,7 +87,7 @@ class PostDetailView(DetailView):
         return context
 
 
-def Profile_view(request, username):
+def profile_view(request, username):
     profile = get_object_or_404(User, username=username)
     posts = Post.objects.filter(author=profile).annotate(
         comment_count=Count('comment')
@@ -211,6 +211,7 @@ class PostsComment(
 
 class CommentBase(LoginRequiredMixin):
     """Базовый класс для работы с комментариями."""
+
     model = Comment
 
     def get_success_url(self):
@@ -226,10 +227,12 @@ class CommentBase(LoginRequiredMixin):
 
 class CommentUpdate(CommentBase, UpdateView):
     """Редактирование комментария."""
+
     template_name = 'blog/comment.html'
     form_class = CommentForm
 
 
 class CommentDelete(CommentBase, DeleteView):
     """Удаление комментария."""
+
     template_name = 'blog/comment.html'

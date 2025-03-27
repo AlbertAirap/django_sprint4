@@ -5,7 +5,7 @@ from blog.views import (
     PostDetailView,
     PostCreateView,
     PostsComment,
-    Profile_view,
+    profile_view,
     ProfileUpdateView,
     PostUpdateView,
     CommentDelete,
@@ -39,7 +39,7 @@ urlpatterns = [
         CategoryListView.as_view(),
         name='category'),
 
-    path('profile/<str:username>/', Profile_view, name='profile'),
+    path('profile/<str:username>/', profile_view, name='profile'),
 
     path('edit-profile/', ProfileUpdateView.as_view(
         template_name='blog/user.html',
