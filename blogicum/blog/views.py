@@ -1,8 +1,14 @@
-from django.views.generic import ListView, DetailView, detail, FormView, UpdateView, DeleteView
+from django.views.generic import (
+    ListView,
+    DetailView,
+    detail,
+    FormView,
+    UpdateView,
+    DeleteView)
 from .models import Post, Category, Comment
 from django.utils import timezone
 from django.http import Http404
-from django.db.models import Q, Count
+from django.db.models import Count
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.models import User
 from django.views.generic.edit import CreateView
@@ -109,7 +115,9 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'blog/user.html'
 
     def get_success_url(self):
-        return reverse_lazy('blog:profile', kwargs={'username': self.request.user.username})
+        return reverse_lazy(
+            'blog:profile',
+            kwargs={'username': self.request.user.username})
 
     def get_object(self, queryset=None):
         """Возвращает текущего авторизованного пользователя"""
@@ -126,7 +134,9 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy('blog:profile', kwargs={'username': self.request.user.username})
+        return reverse_lazy(
+            'blog:profile',
+            kwargs={'username': self.request.user.username})
 
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
@@ -156,7 +166,10 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
 
     def dispatch(self, request, *args, **kwargs):
         self.object = self.get_object()
-        if not (request.user == self.object.author or request.user.is_superuser):
+        if not (
+            request.user == self.object.author
+            or request.user.is_superuser
+        ):
             return redirect('blog:detail', pk=self.object.pk)
 
         return super().dispatch(request, *args, **kwargs)
