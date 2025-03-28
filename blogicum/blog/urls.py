@@ -19,19 +19,22 @@ app_name = 'blog'
 urlpatterns = [
     path('', PostListView.as_view(), name='index'),
     path('posts/create/', PostCreateView.as_view(), name='create_post'),
-    path('posts/<int:pk>/', PostDetailView.as_view(), name='detail'),
-    path('posts/<int:pk>/edit/', PostUpdateView.as_view(), name='edit_post'),
+    path('posts/<int:post_id>/', PostDetailView.as_view(), name='detail'),
     path(
-        'posts/<int:pk>/delete/',
+        'posts/<int:post_id>/edit/',
+        PostUpdateView.as_view(),
+        name='edit_post'),
+    path(
+        'posts/<int:post_id>/delete/',
         PostDeleteView.as_view(),
         name='delete_post'),
-    path('posts/<int:pk>/comment/',
+    path('posts/<int:post_id>/comment/',
          PostsComment.as_view(),
          name='add_comment'),
-    path('posts/<int:post_pk>/comment/<int:pk>',
+    path('posts/<int:post_id>/comment/<int:comment_id>',
          CommentUpdate.as_view(),
          name='edit_comment'),
-    path('posts/<int:post_pk>/delete_comment/<int:pk>/',
+    path('posts/<int:post_id>/delete_comment/<int:comment_id>/',
          CommentDelete.as_view(),
          name='delete_comment'),
     path(
@@ -43,7 +46,7 @@ urlpatterns = [
 
     path('edit-profile/', ProfileUpdateView.as_view(
         template_name='blog/user.html',
-    ), name='user'),
+    ), name='edit_profile'),
 
     path('password-change/', views.PasswordChangeView.as_view(
         template_name='registration/password_change_form.html',
